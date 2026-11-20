@@ -1,0 +1,27 @@
+/* GYEOL — 공통 움직임 (복원본)
+   원본 중 공지 띠 규칙은 그대로, 나머지는 index-wonder.html 동작 기준으로 다시 작성 */
+
+:root { --ease: cubic-bezier(0.22, 1, 0.36, 1); }
+html { scroll-behavior: smooth; }
+
+/* 링크·버튼 색 전환 */
+a, .btn { transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out; }
+
+/* 공지 띠 (marquee) */
+.notice { background: var(--white); border-bottom: 1px solid var(--line); overflow: hidden; font-size: 13px; color: var(--sub); }
+.notice__track { display: flex; width: max-content; }
+.notice__group { display: flex; flex: none; gap: 48px; padding: 10px 24px; white-space: nowrap; animation: marquee 40s linear infinite; }
+.notice__group span::after { content: "·"; margin-left: 48px; color: var(--line); }
+.notice:hover .notice__group { animation-play-state: paused; }
+@keyframes marquee { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-100%, 0, 0); } }
+
+/* 스크롤 등장: motion.js가 .reveal을 붙이고, 화면에 들어오면 .is-in */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease-in-out, transform 1s var(--ease); }
+.reveal.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .notice__group[aria-hidden="true"] { display: none; }
+  .notice__group { white-space: normal; flex-wrap: wrap; row-gap: 4px; animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
